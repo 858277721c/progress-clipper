@@ -2,7 +2,7 @@ package com.sd.lib.pgclipper.point;
 
 import android.graphics.Color;
 
-public abstract class ClipPoint
+public class ClipPoint
 {
     private final int mProgress;
     private int mDisplaySize;

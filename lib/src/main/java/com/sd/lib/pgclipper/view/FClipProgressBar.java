@@ -12,6 +12,7 @@ import com.sd.lib.pgclipper.ProgressClipper;
 import com.sd.lib.pgclipper.SimpleProgressClipper;
 import com.sd.lib.pgclipper.point.BoundsPoint;
 import com.sd.lib.pgclipper.point.ClipPoint;
+import com.sd.lib.pgclipper.point.ProgressPoint;
 import com.sd.lib.pgclipper.point.TargetPoint;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class FClipProgressBar extends View implements ProgressClipper
 
     private List<TargetPoint> mTargetPoints;
     private List<BoundsPoint> mBoundsPoints;
+
+    private ProgressPoint mProgressPoint;
 
     public FClipProgressBar(Context context, AttributeSet attrs)
     {
@@ -58,6 +61,16 @@ public class FClipProgressBar extends View implements ProgressClipper
     public void setColorProgress(int color)
     {
         mColorProgress = color;
+    }
+
+    /**
+     * 设置跟随进度的点
+     *
+     * @param point
+     */
+    public void setProgressPoint(ProgressPoint point)
+    {
+        mProgressPoint = point;
     }
 
     @Override
@@ -123,9 +136,32 @@ public class FClipProgressBar extends View implements ProgressClipper
                 drawPoint(item, canvas, mPaint);
             }
         }
+
+        // draw progress point
+        if (mProgressPoint != null)
+        {
+            mPaint.setColor(mProgressPoint.getDisplayColor());
+            checkPointDisplaySize(mProgressPoint);
+            final int end = progressEnd + mProgressPoint.getDisplaySize();
+            canvas.drawRect(progressEnd, 0, end, getHeight(), mPaint);
+        }
     }
 
     private void drawPoint(ClipPoint point, Canvas canvas, Paint paint)
+    {
+        if (point == null)
+            return;
+
+        checkPointDisplaySize(point);
+
+        final int start = getPointStart(point, getMeasuredWidth());
+        final int end = start + point.getDisplaySize();
+
+        paint.setColor(point.getDisplayColor());
+        canvas.drawRect(start, 0, end, getHeight(), paint);
+    }
+
+    private void checkPointDisplaySize(ClipPoint point)
     {
         if (point == null)
             return;
@@ -136,12 +172,6 @@ public class FClipProgressBar extends View implements ProgressClipper
             displaySize = (int) getContext().getResources().getDisplayMetrics().density;
             point.setDisplaySize(displaySize);
         }
-
-        final int start = getPointStart(point, getMeasuredWidth());
-        final int end = start + displaySize;
-
-        paint.setColor(point.getDisplayColor());
-        canvas.drawRect(start, 0, end, getHeight(), paint);
     }
 
     private int getPointStart(ClipPoint point, int totalSize)
