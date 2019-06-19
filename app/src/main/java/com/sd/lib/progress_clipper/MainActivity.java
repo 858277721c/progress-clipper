@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // 将边界点添加到进度条
                 mProgressBar.addBoundsPoint(point);
 
-                mAdapter.getDataHolder().addData(point);
+                mAdapter.getDataHolder().setData(mProgressBar.getBoundsPoint());
                 break;
         }
     }
