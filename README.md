@@ -11,6 +11,8 @@ mProgressBar.setColorBackground(Color.parseColor("#999999"));
 mProgressBar.setColorProgress(getResources().getColor(R.color.colorPrimary));
 // 设置最大进度值
 mProgressBar.setMax(100);
+// 设置跟随进度的点
+mProgressBar.setProgressPoint(new ProgressPoint());
 ```
 
 目标点：
