@@ -20,13 +20,6 @@
             android:layout_height="wrap_content"
             android:text="select" />
 
-        <CheckBox
-            android:id="@+id/cb_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="delete" />
-
         <Button
             android:id="@+id/btn_remove"
             android:layout_width="wrap_content"

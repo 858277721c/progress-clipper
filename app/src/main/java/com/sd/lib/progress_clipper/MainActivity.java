@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 point.setSelectedColor(Color.RED);
                 // 设置边界分段是否为选中状态
                 point.setSelected(false);
-                // 设置边界分段是否为删除状态
-                point.setDeleted(false);
 
                 // 将边界点添加到进度条
                 mProgressBar.addBoundsPoint(point);
@@ -109,19 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
             cb_select.setChecked(model.isSelected());
-
-            final CheckBox cb_delete = get(R.id.cb_delete, convertView);
-            cb_delete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-            {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                {
-                    // 切换分段删除状态
-                    model.setDeleted(isChecked);
-                    mProgressBar.updateUI();
-                }
-            });
-            cb_delete.setChecked(model.isDeleted());
 
             final View btn_remove = get(R.id.btn_remove, convertView);
             btn_remove.setOnClickListener(new View.OnClickListener()

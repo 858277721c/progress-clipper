@@ -116,22 +116,17 @@ public class FClipProgressBar extends View implements ProgressClipper
                 final int end = getPointStart(item, totalSize);
 
                 int color = 0;
-                if (item.isDeleted())
+                if (item.isSelected())
                 {
-                    color = mColorBackground;
+                    color = item.getSelectedColor();
                 } else
                 {
-                    if (item.isSelected())
-                    {
-                        color = item.getSelectedColor();
-                    } else
-                    {
-                        color = item.getBoundColor();
-                    }
-
-                    if (color == 0)
-                        color = mColorProgress;
+                    color = item.getBoundColor();
                 }
+
+                if (color == 0)
+                    color = mColorProgress;
+
                 mPaint.setColor(color);
                 canvas.drawRect(start, 0, end, getHeight(), mPaint);
 

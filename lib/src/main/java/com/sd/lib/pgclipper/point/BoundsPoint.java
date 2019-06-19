@@ -9,8 +9,6 @@ public class BoundsPoint extends ClipPoint
     private boolean mIsSelected;
     private int mSelectedColor;
 
-    private boolean mIsDeleted;
-
     public BoundsPoint(int progress)
     {
         super(progress);
@@ -46,16 +44,6 @@ public class BoundsPoint extends ClipPoint
     public void setSelectedColor(int color)
     {
         mSelectedColor = color;
-    }
-
-    public boolean isDeleted()
-    {
-        return mIsDeleted;
-    }
-
-    public void setDeleted(boolean deleted)
-    {
-        mIsDeleted = deleted;
     }
 
     @Override
