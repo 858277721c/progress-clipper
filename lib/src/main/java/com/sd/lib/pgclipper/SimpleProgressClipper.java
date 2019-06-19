@@ -1,6 +1,7 @@
 package com.sd.lib.pgclipper;
 
 import com.sd.lib.pgclipper.point.BoundsPoint;
+import com.sd.lib.pgclipper.point.ClipPoint;
 import com.sd.lib.pgclipper.point.TargetPoint;
 
 import java.util.ArrayList;
@@ -105,7 +106,24 @@ public abstract class SimpleProgressClipper implements ProgressClipper
         if (mMax != max)
         {
             mMax = max;
+            removeOutRangePoint(mTargetHolder, mMax);
+            removeOutRangePoint(mBoundsHolder, mMax);
             updateUI();
+        }
+    }
+
+    private static void removeOutRangePoint(TreeMap<Integer, ? extends ClipPoint> map, int max)
+    {
+        if (max < 0)
+            throw new IllegalArgumentException("max < 0");
+
+        while (true)
+        {
+            final Integer higher = map.higherKey(max);
+            if (higher == null)
+                break;
+
+            map.remove(higher);
         }
     }
 
