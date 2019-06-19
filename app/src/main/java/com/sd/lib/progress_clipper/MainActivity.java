@@ -129,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 清空所有目标点
         mProgressBar.clearTargetPoint();
-        mProgressBar.addTargetPoint(new TargetPoint(20, true));
-        mProgressBar.addTargetPoint(new TargetPoint(50, false));
+        mProgressBar.addTargetPoint(new TargetPoint(20));
+        mProgressBar.addTargetPoint(new TargetPoint(50));
 
         // 清空所有边界点
         mProgressBar.clearBoundsPoint();

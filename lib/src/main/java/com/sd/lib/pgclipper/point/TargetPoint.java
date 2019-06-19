@@ -2,17 +2,21 @@ package com.sd.lib.pgclipper.point;
 
 public class TargetPoint extends ClipPoint
 {
-    private final boolean mIsSticky;
+    private boolean mIsSticky;
 
-    public TargetPoint(int progress, boolean sticky)
+    public TargetPoint(int progress)
     {
         super(progress);
-        mIsSticky = sticky;
     }
 
     public boolean isSticky()
     {
         return mIsSticky;
+    }
+
+    public void setSticky(boolean sticky)
+    {
+        mIsSticky = sticky;
     }
 
     @Override
