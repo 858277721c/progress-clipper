@@ -156,6 +156,13 @@ public interface ProgressClipper
     void clearBoundsPoint();
 
     /**
+     * 同步进度到某个点
+     *
+     * @param point
+     */
+    void synchronizeProgressToPoint(ClipPoint point);
+
+    /**
      * 同步进度到最后一个边界点，如果没有边界点，则进度设置为0
      */
     void synchronizeProgressToLastBoundsPoint();
