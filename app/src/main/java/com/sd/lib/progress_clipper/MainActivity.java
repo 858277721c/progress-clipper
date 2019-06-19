@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 设置最大进度值
         mProgressBar.setMax(100);
 
+        // 设置边界点变化监听
         mProgressBar.setOnBoundsPointChangeCallback(new ProgressClipper.OnBoundsPointChangeCallback()
         {
             @Override
@@ -119,7 +120,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 清空所有目标点
         mProgressBar.clearTargetPoint();
-        mProgressBar.addTargetPoint(new TargetPoint(20));
+
+        // 在进度为20的地方创建一个目标点，当进度到达目标点后，目标点会被进度覆盖
+        final TargetPoint point = new TargetPoint(20);
+        // 设置目标点大小，默认1dp
+        point.setDisplaySize(5);
+        // 设置目标点颜色，默认白色
+        point.setDisplayColor(Color.WHITE);
+        // true-当进度到达目标点后，目标点会被进度覆盖但是不会被清除，即进度小于目标点进度的时候目标点又可以被看到；false-会被清除掉
+        point.setSticky(true);
+        // 添加目标点
+        mProgressBar.addTargetPoint(point);
         mProgressBar.addTargetPoint(new TargetPoint(50));
 
         // 清空所有边界点
