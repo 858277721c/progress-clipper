@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.sd.lib.adapter.FSimpleAdapter;
 import com.sd.lib.pgclipper.ProgressClipper;
 import com.sd.lib.pgclipper.point.BoundsPoint;
+import com.sd.lib.pgclipper.point.ProgressPoint;
 import com.sd.lib.pgclipper.point.TargetPoint;
 import com.sd.lib.pgclipper.view.FClipProgressBar;
 
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mProgressBar.setColorProgress(getResources().getColor(R.color.colorPrimary));
         // 设置最大进度值
         mProgressBar.setMax(100);
+        // 设置跟随进度的点
+        mProgressBar.setProgressPoint(new ProgressPoint());
 
         // 设置边界点变化监听
         mProgressBar.setOnBoundsPointChangeCallback(new ProgressClipper.OnBoundsPointChangeCallback()
