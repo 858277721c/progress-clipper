@@ -17,7 +17,7 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     private int mMax;
     private int mProgress;
 
-    private OnBoundsPointCountChangeCallback mOnBoundsPointCountChangeCallback;
+    private OnBoundsPointChangeCallback mOnBoundsPointChangeCallback;
 
     public SimpleProgressClipper()
     {
@@ -135,9 +135,9 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     }
 
     @Override
-    public void setOnBoundsPointCountChangeCallback(OnBoundsPointCountChangeCallback callback)
+    public void setOnBoundsPointChangeCallback(OnBoundsPointChangeCallback callback)
     {
-        mOnBoundsPointCountChangeCallback = callback;
+        mOnBoundsPointChangeCallback = callback;
     }
 
     @Override
@@ -153,8 +153,8 @@ public abstract class SimpleProgressClipper implements ProgressClipper
         mBoundsHolder.put(progress, point);
         updateUI();
 
-        if (mOnBoundsPointCountChangeCallback != null)
-            mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
+        if (mOnBoundsPointChangeCallback != null)
+            mOnBoundsPointChangeCallback.onBoundsPointChanged(mBoundsHolder.size());
     }
 
     @Override
@@ -163,8 +163,8 @@ public abstract class SimpleProgressClipper implements ProgressClipper
         if (mBoundsHolder.remove(progress) != null)
         {
             updateUI();
-            if (mOnBoundsPointCountChangeCallback != null)
-                mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
+            if (mOnBoundsPointChangeCallback != null)
+                mOnBoundsPointChangeCallback.onBoundsPointChanged(mBoundsHolder.size());
         }
     }
 
@@ -174,8 +174,8 @@ public abstract class SimpleProgressClipper implements ProgressClipper
         mBoundsHolder.clear();
         updateUI();
 
-        if (mOnBoundsPointCountChangeCallback != null)
-            mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
+        if (mOnBoundsPointChangeCallback != null)
+            mOnBoundsPointChangeCallback.onBoundsPointChanged(mBoundsHolder.size());
     }
 
     @Override

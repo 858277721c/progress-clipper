@@ -235,9 +235,9 @@ public class FClipProgressBar extends View implements ProgressClipper
     }
 
     @Override
-    public void setOnBoundsPointCountChangeCallback(OnBoundsPointCountChangeCallback callback)
+    public void setOnBoundsPointChangeCallback(OnBoundsPointChangeCallback callback)
     {
-        getClipper().setOnBoundsPointCountChangeCallback(callback);
+        getClipper().setOnBoundsPointChangeCallback(callback);
     }
 
     @Override

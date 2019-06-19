@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 设置最大进度值
         mProgressBar.setMax(100);
 
-        mProgressBar.setOnBoundsPointCountChangeCallback(new ProgressClipper.OnBoundsPointCountChangeCallback()
+        mProgressBar.setOnBoundsPointChangeCallback(new ProgressClipper.OnBoundsPointChangeCallback()
         {
             @Override
-            public void onBoundsPointCountChanged(int size)
+            public void onBoundsPointChanged(int size)
             {
                 updateAdapter();
             }
