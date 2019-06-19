@@ -78,12 +78,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mProgressBar.updateUI();
                 break;
             case R.id.btn_delete_bound:
-                final BoundsPoint last = mProgressBar.getLastBoundsPoint();
+                BoundsPoint last = mProgressBar.getLastBoundsPoint();
                 if (last != null)
                 {
                     if (last.getBoundColor() == COLOR_DELETE)
                     {
                         mProgressBar.removeBoundsPoint(last.getProgress());
+
+                        // 移除最后一个边界点后，把进度同步到上一个边界点
+                        last = mProgressBar.getLastBoundsPoint();
+                        if (last != null)
+                            mProgressBar.setProgress(last.getProgress());
+                        else
+                            mProgressBar.setProgress(0);
                     } else
                     {
                         last.setBoundColor(COLOR_DELETE);
