@@ -7,7 +7,7 @@ import java.util.Comparator;
 public class BoundsPoint extends ClipPoint implements Comparable<BoundsPoint>
 {
     private int mBoundColor;
-    private int mSelectedColor = Color.RED;
+    private int mSelectedColor;
     private boolean mIsDeleted;
     private boolean mIsSelected;
 
@@ -28,6 +28,8 @@ public class BoundsPoint extends ClipPoint implements Comparable<BoundsPoint>
 
     public int getSelectedColor()
     {
+        if (mSelectedColor == 0)
+            mSelectedColor = Color.RED;
         return mSelectedColor;
     }
 

@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <com.sd.lib.clippgb.view.FClipProgressBar
+    <com.sd.lib.pgclipper.view.FClipProgressBar
         android:id="@+id/view_progress"
         android:layout_width="match_parent"
         android:layout_height="10dp" />

@@ -5,22 +5,38 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.sd.lib.adapter.FSimpleAdapter;
 import com.sd.lib.pgclipper.point.BoundsPoint;
 import com.sd.lib.pgclipper.point.TargetPoint;
 import com.sd.lib.pgclipper.view.FClipProgressBar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
-    private FClipProgressBar mProgressView;
+    private FClipProgressBar mProgressBar;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mProgressView = findViewById(R.id.view_progress);
+        mProgressBar = findViewById(R.id.view_progress);
+        mListView = findViewById(R.id.lv_bound);
+        mListView.setAdapter(mAdapter);
         reset();
+
+        // 设置背景颜色
+        mProgressBar.setColorBackground(Color.parseColor("#999999"));
+        // 设置进度颜色
+        mProgressBar.setColorProgress(getResources().getColor(R.color.colorPrimary));
+        // 设置最大进度值
+        mProgressBar.setMax(100);
     }
 
     @Override
@@ -41,23 +57,76 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_add_bound:
                 cancelAnimator();
-                final BoundsPoint boundPoint = new BoundsPoint(mProgressView.getProgress());
-                boundPoint.setDisplayColor(Color.YELLOW);
-                boundPoint.setBoundColor(Color.GREEN);
-                boundPoint.setSelectedColor(Color.RED);
-                mProgressView.addBoundsPoint(boundPoint);
+
+                // 创建一个边界点
+                final BoundsPoint point = new BoundsPoint(mProgressBar.getProgress());
+                // 设置边界点的颜色
+                point.setDisplayColor(Color.WHITE);
+                // 设置边界分段的颜色
+                point.setBoundColor(Color.GREEN);
+                // 设置边界分段选中的颜色
+                point.setSelectedColor(Color.RED);
+                // 设置边界分段是否为选中状态
+                point.setSelected(false);
+                // 设置边界分段是否为删除状态
+                point.setDeleted(false);
+
+                // 将边界点添加到进度条
+                mProgressBar.addBoundsPoint(point);
+
+                mAdapter.getDataHolder().addData(point);
                 break;
         }
     }
 
+    private final FSimpleAdapter<BoundsPoint> mAdapter = new FSimpleAdapter<BoundsPoint>()
+    {
+        @Override
+        public int getLayoutId(int position, View convertView, ViewGroup parent)
+        {
+            return R.layout.item_bounds;
+        }
+
+        @Override
+        public void onBindData(int position, View convertView, ViewGroup parent, final BoundsPoint model)
+        {
+            final TextView tv_name = get(R.id.tv_name, convertView);
+            tv_name.setText("分段" + (position + 1));
+
+            final CheckBox cb_select = get(R.id.cb_select, convertView);
+            cb_select.setChecked(model.isSelected());
+            cb_select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    model.setSelected(isChecked);
+                    mProgressBar.updateUI();
+                }
+            });
+
+            final CheckBox cb_delete = get(R.id.cb_delete, convertView);
+            cb_delete.setChecked(model.isDeleted());
+            cb_delete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
+                    model.setDeleted(isChecked);
+                    mProgressBar.updateUI();
+                }
+            });
+        }
+    };
+
     private void reset()
     {
         cancelAnimator();
-        mProgressView.setProgress(0);
-        mProgressView.setMax(100);
-        mProgressView.addTargetPoint(new TargetPoint(10, true));
-        mProgressView.addTargetPoint(new TargetPoint(20, false));
-        mProgressView.addTargetPoint(new TargetPoint(50, false));
+        mProgressBar.setProgress(0);
+        mProgressBar.setMax(100);
+        mProgressBar.addTargetPoint(new TargetPoint(10, true));
+        mProgressBar.addTargetPoint(new TargetPoint(20, false));
+        mProgressBar.addTargetPoint(new TargetPoint(50, false));
     }
 
     private ValueAnimator mAnimator;
@@ -73,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation)
                 {
-                    mProgressView.setProgress((Integer) animation.getAnimatedValue());
+                    mProgressBar.setProgress((Integer) animation.getAnimatedValue());
                 }
             });
         }
@@ -83,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startAnimator()
     {
         cancelAnimator();
-        getAnimator().setIntValues(mProgressView.getProgress(), mProgressView.getMax());
+        getAnimator().setIntValues(mProgressBar.getProgress(), mProgressBar.getMax());
         getAnimator().start();
     }
 
