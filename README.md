@@ -24,6 +24,9 @@ point.setSticky(true);
 // 添加目标点
 mProgressBar.addTargetPoint(point);
 
+// 移除目标点
+mProgressBar.removeTargetPoint(point.getProgress());
+
 // 清空所有目标点
 mProgressBar.clearTargetPoint();
 ```
