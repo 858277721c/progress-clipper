@@ -67,7 +67,7 @@ public class FClipProgressBar extends View implements ProgressClipper
         canvas.drawColor(mColorBackground);
 
         final int totalSize = getMeasuredWidth();
-        final int currentProgress = getClipper().getProgress();
+        final int currentProgress = getProgress();
 
         // draw target
         final List<TargetPoint> listTarget = mTargetPoints;
@@ -78,7 +78,7 @@ public class FClipProgressBar extends View implements ProgressClipper
                 if (item.getProgress() <= currentProgress)
                 {
                     if (!item.isSticky())
-                        getClipper().removeTargetPoint(item.getProgress());
+                        removeTargetPoint(item.getProgress());
                     continue;
                 }
                 drawPoint(item, canvas, mPaint);
@@ -86,7 +86,7 @@ public class FClipProgressBar extends View implements ProgressClipper
         }
 
         // draw progress
-        final float progressPercent = getClipper().getProgressPercent(currentProgress);
+        final float progressPercent = getProgressPercent(currentProgress);
         final int progressEnd = (int) (progressPercent * totalSize);
 
         mPaint.setColor(mColorProgress);
@@ -102,7 +102,7 @@ public class FClipProgressBar extends View implements ProgressClipper
                 final BoundsPoint item = listBound.get(i);
                 if (item.getProgress() > currentProgress)
                 {
-                    getClipper().removeBoundsPoint(item.getProgress());
+                    removeBoundsPoint(item.getProgress());
                     continue;
                 }
 
@@ -146,7 +146,7 @@ public class FClipProgressBar extends View implements ProgressClipper
         if (totalSize <= 0)
             return 0;
 
-        final float percent = getClipper().getProgressPercent(point.getProgress());
+        final float percent = getProgressPercent(point.getProgress());
         return (int) (percent * totalSize);
     }
 
@@ -238,6 +238,12 @@ public class FClipProgressBar extends View implements ProgressClipper
     public void clearTargetPoint()
     {
         getClipper().clearTargetPoint();
+    }
+
+    @Override
+    public void setOnBoundsPointCountChangeCallback(OnBoundsPointCountChangeCallback callback)
+    {
+        getClipper().setOnBoundsPointCountChangeCallback(callback);
     }
 
     @Override

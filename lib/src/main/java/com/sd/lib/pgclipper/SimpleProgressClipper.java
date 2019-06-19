@@ -17,6 +17,8 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     private int mMax;
     private int mProgress;
 
+    private OnBoundsPointCountChangeCallback mOnBoundsPointCountChangeCallback;
+
     public SimpleProgressClipper()
     {
         mTargetHolder = new TreeMap<>(mIntegerComparator);
@@ -87,7 +89,11 @@ public abstract class SimpleProgressClipper implements ProgressClipper
             mProgress = progress;
 
             if (mProgress == 0)
+            {
                 mBoundsHolder.clear();
+                if (mOnBoundsPointCountChangeCallback != null)
+                    mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
+            }
 
             updateUI();
         }
@@ -146,6 +152,12 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     }
 
     @Override
+    public void setOnBoundsPointCountChangeCallback(OnBoundsPointCountChangeCallback callback)
+    {
+        mOnBoundsPointCountChangeCallback = callback;
+    }
+
+    @Override
     public BoundsPoint addBoundsPoint()
     {
         final int progress = getProgress();
@@ -157,8 +169,11 @@ public abstract class SimpleProgressClipper implements ProgressClipper
 
         final BoundsPoint point = new BoundsPoint(progress);
         mBoundsHolder.put(progress, point);
-
         updateUI();
+
+        if (mOnBoundsPointCountChangeCallback != null)
+            mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
+
         return point;
     }
 
@@ -169,7 +184,11 @@ public abstract class SimpleProgressClipper implements ProgressClipper
             throw new IllegalArgumentException("progress out of range");
 
         if (mBoundsHolder.remove(progress) != null)
+        {
             updateUI();
+            if (mOnBoundsPointCountChangeCallback != null)
+                mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
+        }
     }
 
     @Override

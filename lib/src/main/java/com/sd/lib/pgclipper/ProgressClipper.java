@@ -90,6 +90,13 @@ public interface ProgressClipper
     void clearTargetPoint();
 
     /**
+     * 边界点数量变化监听
+     *
+     * @param callback
+     */
+    void setOnBoundsPointCountChangeCallback(OnBoundsPointCountChangeCallback callback);
+
+    /**
      * 添加边界点
      *
      * @return
@@ -107,4 +114,14 @@ public interface ProgressClipper
      * 更新UI
      */
     void updateUI();
+
+    interface OnBoundsPointCountChangeCallback
+    {
+        /**
+         * 边界点数量变化监听
+         *
+         * @param size
+         */
+        void onBoundsPointCountChanged(int size);
+    }
 }

@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sd.lib.adapter.FSimpleAdapter;
+import com.sd.lib.pgclipper.ProgressClipper;
 import com.sd.lib.pgclipper.point.BoundsPoint;
 import com.sd.lib.pgclipper.point.TargetPoint;
 import com.sd.lib.pgclipper.view.FClipProgressBar;
@@ -38,6 +38,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mProgressBar.setColorProgress(getResources().getColor(R.color.colorPrimary));
         // 设置最大进度值
         mProgressBar.setMax(100);
+
+        mProgressBar.setOnBoundsPointCountChangeCallback(new ProgressClipper.OnBoundsPointCountChangeCallback()
+        {
+            @Override
+            public void onBoundsPointCountChanged(int size)
+            {
+                updateAdapter();
+            }
+        });
     }
 
     @Override
@@ -57,21 +66,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.btn_add_bound:
-                if (mProgressBar.getProgress() == 0)
+                // 创建一个边界点
+                final BoundsPoint point = mProgressBar.addBoundsPoint();
+                if (point != null)
                 {
-                    Toast.makeText(this, "不能在进度为0的时候添加边界点", Toast.LENGTH_SHORT).show();
-                } else
-                {
-                    // 创建一个边界点
-                    final BoundsPoint point = mProgressBar.addBoundsPoint();
                     // 设置边界点的颜色
                     point.setDisplayColor(Color.WHITE);
                     // 设置边界分段的颜色
                     point.setBoundColor(Color.GREEN);
                     // 刷新UI
                     mProgressBar.updateUI();
-
-                    updateAdapter();
                 }
                 break;
             case R.id.btn_delete_bound:
@@ -117,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mProgressBar.clearTargetPoint();
         mProgressBar.addTargetPoint(new TargetPoint(20));
         mProgressBar.addTargetPoint(new TargetPoint(50));
-
-        updateAdapter();
     }
 
     private void updateAdapter()
