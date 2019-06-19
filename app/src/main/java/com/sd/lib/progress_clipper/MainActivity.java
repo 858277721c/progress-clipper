@@ -94,28 +94,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tv_name.setText("分段" + (position + 1));
 
             final CheckBox cb_select = get(R.id.cb_select, convertView);
-            cb_select.setChecked(model.isSelected());
             cb_select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
             {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
                 {
+                    // 切换分段选中状态
                     model.setSelected(isChecked);
                     mProgressBar.updateUI();
                 }
             });
+            cb_select.setChecked(model.isSelected());
 
             final CheckBox cb_delete = get(R.id.cb_delete, convertView);
-            cb_delete.setChecked(model.isDeleted());
             cb_delete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
             {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
                 {
+                    // 切换分段删除状态
                     model.setDeleted(isChecked);
                     mProgressBar.updateUI();
                 }
             });
+            cb_delete.setChecked(model.isDeleted());
         }
     };
 
@@ -124,8 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cancelAnimator();
         mProgressBar.setProgress(0);
         mProgressBar.setMax(100);
-        mProgressBar.addTargetPoint(new TargetPoint(10, true));
-        mProgressBar.addTargetPoint(new TargetPoint(20, false));
+        mProgressBar.addTargetPoint(new TargetPoint(20, true));
         mProgressBar.addTargetPoint(new TargetPoint(50, false));
     }
 
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mAnimator == null)
         {
             mAnimator = new ValueAnimator();
-            mAnimator.setDuration(5 * 1000);
+            mAnimator.setDuration(10 * 1000);
             mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
             {
                 @Override
