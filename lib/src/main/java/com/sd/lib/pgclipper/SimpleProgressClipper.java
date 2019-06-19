@@ -49,7 +49,7 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     @Override
     public float getProgressPercent(int progress)
     {
-        if (progress < 0)
+        if (progress <= 0)
             progress = 0;
         return mMax == 0 ? 0.0f : (float) progress / mMax;
     }
@@ -83,31 +83,17 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     @Override
     public void setProgress(int progress)
     {
-        progress = safeProgress(progress);
-        if (mProgress != progress)
-        {
-            mProgress = progress;
-
-            if (mProgress == 0)
-            {
-                mBoundsHolder.clear();
-                if (mOnBoundsPointCountChangeCallback != null)
-                    mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
-            }
-
-            updateUI();
-        }
-    }
-
-    private int safeProgress(int progress)
-    {
         if (progress < 0)
             progress = 0;
 
         if (progress > mMax)
             progress = mMax;
 
-        return progress;
+        if (mProgress != progress)
+        {
+            mProgress = progress;
+            updateUI();
+        }
     }
 
     @Override
@@ -129,9 +115,6 @@ public abstract class SimpleProgressClipper implements ProgressClipper
         final int progress = point.getProgress();
         if (progress < 0 || progress > mMax)
             throw new IllegalArgumentException("progress out of range");
-
-        if (mTargetHolder.containsKey(progress))
-            return;
 
         mTargetHolder.put(progress, point);
         updateUI();
@@ -158,37 +141,41 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     }
 
     @Override
-    public BoundsPoint addBoundsPoint()
+    public void addBoundsPoint(BoundsPoint point)
     {
-        final int progress = getProgress();
+        final int progress = point.getProgress();
+        if (progress < 0 || progress > mMax)
+            throw new IllegalArgumentException("progress out of range");
+
         if (progress == 0)
-            return null;
+            return;
 
-        if (mBoundsHolder.containsKey(progress))
-            return null;
-
-        final BoundsPoint point = new BoundsPoint(progress);
         mBoundsHolder.put(progress, point);
         updateUI();
 
         if (mOnBoundsPointCountChangeCallback != null)
             mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
-
-        return point;
     }
 
     @Override
     public void removeBoundsPoint(int progress)
     {
-        if (progress < 0 || progress > mMax)
-            throw new IllegalArgumentException("progress out of range");
-
         if (mBoundsHolder.remove(progress) != null)
         {
             updateUI();
             if (mOnBoundsPointCountChangeCallback != null)
                 mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
         }
+    }
+
+    @Override
+    public void clearBoundsPoint()
+    {
+        mBoundsHolder.clear();
+        updateUI();
+
+        if (mOnBoundsPointCountChangeCallback != null)
+            mOnBoundsPointCountChangeCallback.onBoundsPointCountChanged(mBoundsHolder.size());
     }
 
     @Override

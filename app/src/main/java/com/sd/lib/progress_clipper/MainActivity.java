@@ -67,16 +67,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_add_bound:
                 // 创建一个边界点
-                final BoundsPoint point = mProgressBar.addBoundsPoint();
-                if (point != null)
-                {
-                    // 设置边界点的颜色
-                    point.setDisplayColor(Color.WHITE);
-                    // 设置边界分段的颜色
-                    point.setBoundColor(Color.GREEN);
-                    // 刷新UI
-                    mProgressBar.updateUI();
-                }
+                final BoundsPoint point = new BoundsPoint(mProgressBar.getProgress());
+                // 设置边界点的颜色
+                point.setDisplayColor(Color.WHITE);
+                // 设置边界分段的颜色
+                point.setBoundColor(Color.GREEN);
+                // 将边界点添加到进度条
+                mProgressBar.addBoundsPoint(point);
+
+                // 刷新UI
+                mProgressBar.updateUI();
                 break;
             case R.id.btn_delete_bound:
                 final BoundsPoint last = mProgressBar.getLastBoundsPoint();
@@ -121,6 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mProgressBar.clearTargetPoint();
         mProgressBar.addTargetPoint(new TargetPoint(20));
         mProgressBar.addTargetPoint(new TargetPoint(50));
+
+        // 清空所有边界点
+        mProgressBar.clearBoundsPoint();
     }
 
     private void updateAdapter()
