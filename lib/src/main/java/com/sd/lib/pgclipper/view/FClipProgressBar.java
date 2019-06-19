@@ -128,8 +128,15 @@ public class FClipProgressBar extends View implements ProgressClipper
         if (point == null)
             return;
 
+        int displaySize = point.getDisplaySize();
+        if (displaySize <= 0)
+        {
+            displaySize = (int) getContext().getResources().getDisplayMetrics().density;
+            point.setDisplaySize(displaySize);
+        }
+
         final int start = getPointStart(point, getMeasuredWidth());
-        final int end = start + point.getDisplaySize();
+        final int end = start + displaySize;
 
         paint.setColor(point.getDisplayColor());
         canvas.drawRect(start, 0, end, getHeight(), paint);

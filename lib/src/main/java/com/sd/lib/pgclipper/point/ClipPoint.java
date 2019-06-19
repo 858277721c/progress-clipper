@@ -20,8 +20,6 @@ public abstract class ClipPoint
 
     public int getDisplaySize()
     {
-        if (mDisplaySize == 0)
-            mDisplaySize = 3;
         return mDisplaySize;
     }
 
