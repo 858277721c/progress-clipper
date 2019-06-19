@@ -134,6 +134,9 @@ public abstract class SimpleProgressClipper implements ProgressClipper
         if (progress < 0 || progress > mMax)
             throw new IllegalArgumentException("progress out of range");
 
+        if (progress == 0)
+            return;
+
         mTargetHolder.put(progress, point);
         updateUI();
     }
