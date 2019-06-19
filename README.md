@@ -12,6 +12,8 @@ mProgressBar.setColorProgress(getResources().getColor(R.color.colorPrimary));
 // 设置最大进度值
 mProgressBar.setMax(100);
 ```
+
+目标点：
 ```java
 // 在进度为20的地方创建一个目标点，当进度到达目标点后，目标点会被进度覆盖
 final TargetPoint point = new TargetPoint(20);
@@ -29,4 +31,14 @@ mProgressBar.removeTargetPoint(point.getProgress());
 
 // 清空所有目标点
 mProgressBar.clearTargetPoint();
+```
+
+边界点：
+```java
+// 创建一个边界点，边界点会显示在进度的上层，不会被进度覆盖
+final BoundsPoint point = new BoundsPoint(mProgressBar.getProgress());
+// 设置边界分段的颜色
+point.setBoundColor(Color.GREEN);
+// 将边界点添加到进度条
+mProgressBar.addBoundsPoint(point);
 ```
