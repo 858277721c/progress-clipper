@@ -1,6 +1,7 @@
 package com.sd.lib.pgclipper;
 
 import com.sd.lib.pgclipper.point.BoundsPoint;
+import com.sd.lib.pgclipper.point.ClipPoint;
 import com.sd.lib.pgclipper.point.TargetPoint;
 
 import java.util.List;
@@ -114,6 +115,13 @@ public interface ProgressClipper
      * 清空所有边界点
      */
     void clearBoundsPoint();
+
+    /**
+     * 同步进度到某个点
+     *
+     * @param point
+     */
+    void synchronizeProgressToPoint(ClipPoint point);
 
     /**
      * 同步进度到最后一个边界点，如果没有边界点，则进度设置为0
