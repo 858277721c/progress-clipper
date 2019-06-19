@@ -268,6 +268,12 @@ public class FClipProgressBar extends View implements ProgressClipper
     }
 
     @Override
+    public void synchronizeProgressToLastBoundsPoint()
+    {
+        getClipper().synchronizeProgressToLastBoundsPoint();
+    }
+
+    @Override
     public void updateUI()
     {
         getClipper().updateUI();

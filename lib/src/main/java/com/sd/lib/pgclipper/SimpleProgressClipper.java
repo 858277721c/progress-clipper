@@ -197,6 +197,16 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     }
 
     @Override
+    public void synchronizeProgressToLastBoundsPoint()
+    {
+        final BoundsPoint last = getLastBoundsPoint();
+        if (last != null)
+            setProgress(last.getProgress());
+        else
+            setProgress(0);
+    }
+
+    @Override
     public final void updateUI()
     {
         updateUIImpl(getTargetPoint(), getBoundsPoint());
