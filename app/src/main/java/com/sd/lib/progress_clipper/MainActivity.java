@@ -126,8 +126,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cancelAnimator();
         mProgressBar.setProgress(0);
         mProgressBar.setMax(100);
+
+        // 清空所有目标点
+        mProgressBar.clearTargetPoint();
         mProgressBar.addTargetPoint(new TargetPoint(20, true));
         mProgressBar.addTargetPoint(new TargetPoint(50, false));
+
+        // 清空所有边界点
+        mProgressBar.clearBoundsPoint();
+
+        mAdapter.getDataHolder().setData(mProgressBar.getBoundsPoint());
     }
 
     private ValueAnimator mAnimator;
