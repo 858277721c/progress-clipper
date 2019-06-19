@@ -74,7 +74,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // 将边界点添加到进度条
                 mProgressBar.addBoundsPoint(point);
 
-                mAdapter.getDataHolder().setData(mProgressBar.getBoundsPoint());
+                updateAdapter();
+                break;
+            case R.id.btn_clear_bound:
+                mProgressBar.clearBoundsPoint();
+                updateAdapter();
                 break;
         }
     }
@@ -118,6 +122,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
             cb_delete.setChecked(model.isDeleted());
+
+            final View btn_remove = get(R.id.btn_remove, convertView);
+            btn_remove.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mProgressBar.removeBoundsPoint(model.getProgress());
+                    updateAdapter();
+                }
+            });
         }
     };
 
@@ -135,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 清空所有边界点
         mProgressBar.clearBoundsPoint();
 
+        updateAdapter();
+    }
+
+    private void updateAdapter()
+    {
         mAdapter.getDataHolder().setData(mProgressBar.getBoundsPoint());
     }
 
