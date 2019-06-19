@@ -29,6 +29,7 @@ public class TargetPoint extends ClipPoint
             return false;
 
         final TargetPoint other = (TargetPoint) obj;
+
         return getProgress() == other.getProgress();
     }
 }
