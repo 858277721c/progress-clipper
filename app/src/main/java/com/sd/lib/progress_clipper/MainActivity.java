@@ -67,10 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.btn_add_bound:
-                // 创建一个边界点
+                // 创建一个边界点，边界点会显示在进度的上层，不会被进度覆盖
                 final BoundsPoint point = new BoundsPoint(mProgressBar.getProgress());
-                // 设置边界点的颜色
-                point.setDisplayColor(Color.WHITE);
                 // 设置边界分段的颜色
                 point.setBoundColor(Color.GREEN);
                 // 将边界点添加到进度条
