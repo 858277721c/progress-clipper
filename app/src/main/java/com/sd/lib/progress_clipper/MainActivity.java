@@ -6,10 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sd.lib.adapter.FSimpleAdapter;
 import com.sd.lib.pgclipper.point.BoundsPoint;
@@ -18,6 +17,8 @@ import com.sd.lib.pgclipper.view.FClipProgressBar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
+    private static final int COLOR_DELETE = Color.RED;
+
     private FClipProgressBar mProgressBar;
     private ListView mListView;
 
@@ -56,27 +57,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.btn_add_bound:
-                cancelAnimator();
+                if (mProgressBar.getProgress() == 0)
+                {
+                    Toast.makeText(this, "不能在进度为0的时候添加边界点", Toast.LENGTH_SHORT).show();
+                } else
+                {
+                    // 创建一个边界点
+                    final BoundsPoint point = mProgressBar.addBoundsPoint();
+                    // 设置边界点的颜色
+                    point.setDisplayColor(Color.WHITE);
+                    // 设置边界分段的颜色
+                    point.setBoundColor(Color.GREEN);
+                    // 刷新UI
+                    mProgressBar.updateUI();
 
-                // 创建一个边界点
-                final BoundsPoint point = new BoundsPoint(mProgressBar.getProgress());
-                // 设置边界点的颜色
-                point.setDisplayColor(Color.WHITE);
-                // 设置边界分段的颜色
-                point.setBoundColor(Color.GREEN);
-                // 设置边界分段选中的颜色
-                point.setSelectedColor(Color.RED);
-                // 设置边界分段是否为选中状态
-                point.setSelected(false);
-
-                // 将边界点添加到进度条
-                mProgressBar.addBoundsPoint(point);
-
-                updateAdapter();
+                    updateAdapter();
+                }
                 break;
-            case R.id.btn_clear_bound:
-                mProgressBar.clearBoundsPoint();
-                updateAdapter();
+            case R.id.btn_delete_bound:
+                final BoundsPoint last = mProgressBar.getLastBoundsPoint();
+                if (last != null)
+                {
+                    if (last.getBoundColor() == COLOR_DELETE)
+                    {
+                        mProgressBar.removeBoundsPoint(last.getProgress());
+                    } else
+                    {
+                        last.setBoundColor(COLOR_DELETE);
+                        mProgressBar.updateUI();
+                    }
+                }
                 break;
         }
     }
@@ -94,30 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             final TextView tv_name = get(R.id.tv_name, convertView);
             tv_name.setText("分段" + (position + 1));
-
-            final CheckBox cb_select = get(R.id.cb_select, convertView);
-            cb_select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-            {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                {
-                    // 切换分段选中状态
-                    model.setSelected(isChecked);
-                    mProgressBar.updateUI();
-                }
-            });
-            cb_select.setChecked(model.isSelected());
-
-            final View btn_remove = get(R.id.btn_remove, convertView);
-            btn_remove.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    mProgressBar.removeBoundsPoint(model.getProgress());
-                    updateAdapter();
-                }
-            });
         }
     };
 
@@ -131,9 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mProgressBar.clearTargetPoint();
         mProgressBar.addTargetPoint(new TargetPoint(20));
         mProgressBar.addTargetPoint(new TargetPoint(50));
-
-        // 清空所有边界点
-        mProgressBar.clearBoundsPoint();
 
         updateAdapter();
     }
@@ -156,7 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation)
                 {
-                    mProgressBar.setProgress((Integer) animation.getAnimatedValue());
+                    final Integer value = (Integer) animation.getAnimatedValue();
+                    mProgressBar.setProgress(value);
                 }
             });
         }

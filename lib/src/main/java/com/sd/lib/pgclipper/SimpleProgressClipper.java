@@ -85,6 +85,10 @@ public abstract class SimpleProgressClipper implements ProgressClipper
         if (mProgress != progress)
         {
             mProgress = progress;
+
+            if (mProgress == 0)
+                mBoundsHolder.clear();
+
             updateUI();
         }
     }
@@ -118,7 +122,7 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     {
         final int progress = point.getProgress();
         if (progress < 0 || progress > mMax)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("progress out of range");
 
         if (mTargetHolder.containsKey(progress))
             return;
@@ -142,34 +146,30 @@ public abstract class SimpleProgressClipper implements ProgressClipper
     }
 
     @Override
-    public void addBoundsPoint(BoundsPoint point)
+    public BoundsPoint addBoundsPoint()
     {
-        final int progress = point.getProgress();
-        if (progress < 0 || progress > mMax)
-            throw new IllegalArgumentException();
-
+        final int progress = getProgress();
         if (progress == 0)
-            return;
+            return null;
 
         if (mBoundsHolder.containsKey(progress))
-            return;
+            return null;
 
+        final BoundsPoint point = new BoundsPoint(progress);
         mBoundsHolder.put(progress, point);
+
         updateUI();
+        return point;
     }
 
     @Override
     public void removeBoundsPoint(int progress)
     {
+        if (progress < 0 || progress > mMax)
+            throw new IllegalArgumentException("progress out of range");
+
         if (mBoundsHolder.remove(progress) != null)
             updateUI();
-    }
-
-    @Override
-    public void clearBoundsPoint()
-    {
-        mBoundsHolder.clear();
-        updateUI();
     }
 
     @Override

@@ -1,13 +1,8 @@
 package com.sd.lib.pgclipper.point;
 
-import android.graphics.Color;
-
 public class BoundsPoint extends ClipPoint
 {
     private int mBoundColor;
-
-    private boolean mIsSelected;
-    private int mSelectedColor;
 
     public BoundsPoint(int progress)
     {
@@ -22,28 +17,6 @@ public class BoundsPoint extends ClipPoint
     public void setBoundColor(int color)
     {
         mBoundColor = color;
-    }
-
-    public boolean isSelected()
-    {
-        return mIsSelected;
-    }
-
-    public void setSelected(boolean selected)
-    {
-        mIsSelected = selected;
-    }
-
-    public int getSelectedColor()
-    {
-        if (mSelectedColor == 0)
-            mSelectedColor = Color.RED;
-        return mSelectedColor;
-    }
-
-    public void setSelectedColor(int color)
-    {
-        mSelectedColor = color;
     }
 
     @Override

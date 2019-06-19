@@ -100,7 +100,7 @@ public class FClipProgressBar extends View implements ProgressClipper
             for (int i = count - 1; i >= 0; i--)
             {
                 final BoundsPoint item = listBound.get(i);
-                if (currentProgress < item.getProgress())
+                if (item.getProgress() > currentProgress)
                 {
                     getClipper().removeBoundsPoint(item.getProgress());
                     continue;
@@ -115,14 +115,7 @@ public class FClipProgressBar extends View implements ProgressClipper
                 }
                 final int end = getPointStart(item, totalSize);
 
-                int color = 0;
-                if (item.isSelected())
-                {
-                    color = item.getSelectedColor();
-                } else
-                {
-                    color = item.getBoundColor();
-                }
+                int color = item.getBoundColor();
 
                 if (color == 0)
                     color = mColorProgress;
@@ -248,21 +241,15 @@ public class FClipProgressBar extends View implements ProgressClipper
     }
 
     @Override
-    public void addBoundsPoint(BoundsPoint point)
+    public BoundsPoint addBoundsPoint()
     {
-        getClipper().addBoundsPoint(point);
+        return getClipper().addBoundsPoint();
     }
 
     @Override
     public void removeBoundsPoint(int progress)
     {
         getClipper().removeBoundsPoint(progress);
-    }
-
-    @Override
-    public void clearBoundsPoint()
-    {
-        getClipper().clearBoundsPoint();
     }
 
     @Override

@@ -91,8 +91,10 @@ public interface ProgressClipper
 
     /**
      * 添加边界点
+     *
+     * @return
      */
-    void addBoundsPoint(BoundsPoint point);
+    BoundsPoint addBoundsPoint();
 
     /**
      * 移除边界点
@@ -100,11 +102,6 @@ public interface ProgressClipper
      * @param progress
      */
     void removeBoundsPoint(int progress);
-
-    /**
-     * 移除所有边界点
-     */
-    void clearBoundsPoint();
 
     /**
      * 更新UI
