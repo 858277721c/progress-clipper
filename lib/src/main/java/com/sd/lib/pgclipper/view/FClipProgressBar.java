@@ -109,31 +109,25 @@ public class FClipProgressBar extends View implements ProgressClipper
         final List<BoundsPoint> listBound = mBoundsPoints;
         if (listBound != null)
         {
-            final int count = listBound.size();
-            for (int i = count - 1; i >= 0; i--)
+            BoundsPoint lastPoint = null;
+            for (BoundsPoint item : listBound)
             {
-                final BoundsPoint item = listBound.get(i);
-
-                int start = 0;
-                final BoundsPoint itemPre = i > 0 ? listBound.get(i - 1) : null;
-                if (itemPre != null)
-                {
-                    start = getPointStart(itemPre, totalSize);
-                }
-                final int end = getPointStart(item, totalSize);
-
                 int color = item.getBoundColor();
                 if (color == 0)
                 {
                     color = mColorProgress;
                     item.setBoundColor(color);
                 }
-
                 mPaint.setColor(color);
+
+                final int start = lastPoint == null ? 0 : getPointStart(lastPoint, totalSize);
+                final int end = getPointStart(item, totalSize);
                 canvas.drawRect(start, 0, end, getHeight(), mPaint);
 
-                drawPoint(itemPre, canvas, mPaint);
+                drawPoint(lastPoint, canvas, mPaint);
                 drawPoint(item, canvas, mPaint);
+
+                lastPoint = item;
             }
         }
 
